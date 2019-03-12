@@ -2,24 +2,23 @@
 title: "Workout 1"
 author: "Ryan Roggenkemper"
 date: "March 10, 2019"
-output: github_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r echo=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
+library(knitr)
 ```
 
-```{r}
+```{r echo=FALSE}
 all_five = read.csv("../data/shots-data.csv")
 all_five$made = c(0, 1)[(all_five$shot_made_flag=="shot_yes") + 1L]
 ```
-
-## 2PT Effective Shooting % by Player 
 
 ```{r echo=FALSE}
 two_percent = all_five %>% 
@@ -28,11 +27,7 @@ two_percent = all_five %>%
                   summarize(total=length(made), made=sum(made)) %>%
                   mutate(perc_made = made/total) %>%
                   arrange(desc(perc_made))
-two_percent
 ``` 
-
-
-## 3PT Effective Shooting % by Player
 
 ```{r echo=FALSE}
 three_percent = all_five %>% 
@@ -41,11 +36,7 @@ three_percent = all_five %>%
                   summarize(total=length(made), made=sum(made)) %>%
                   mutate(perc_made = made/total) %>%
                   arrange(desc(perc_made))
-three_percent
 ``` 
-
-
-## Effective Shooting % by Player
 
 ```{r echo=FALSE}
 total_percent = all_five %>% 
@@ -53,12 +44,11 @@ total_percent = all_five %>%
                   summarize(total=length(made), made=sum(made)) %>%
                   mutate(perc_made = made/total) %>%
                   arrange(desc(perc_made))
-total_percent
 ```
 
 
 
-# Article: Why Andre Iguodala should be the new star of the Warriors' offense
+# Why Andre Iguodala should be the new star of the Warriors' offense
 
 
 ### Introduction
@@ -75,60 +65,57 @@ There is little background for this article. I do not know much about the nuance
 
 The data this article is based on consists of information from the 2016 season about all of the shots taken by 5 players from the Golden State Warriors: Stephen Curry, Kevin Durant, Andre Iguodala, Klay Thompson, and Draymond Green. It was collected by me from the Github repository of UC Berkeley's Statistics 133 course. I do not know how the data was originally gathered/collected from. Generally, sample sizes of 5 are on the small side for producing statistically significant results. However, in this case, because there is data for 5 players, and basketball allows for exactly 5 players per team to be on the court, it is the opinion of the author that this sample size is perfect. 
 
+An example of the data table used can be seen here: 
+
+```{r echo=FALSE}
+kable(head(all_five))
+```
+
 
 ### Analysis
 
 The analysis supporting this claim will primarily be based on tables showing shooting averages for each of the five players, from within the 3-point line, outside the 3-point line, and for all shots. These tables can be seen below:
 
-```{r echo=FALSE}
-all_five = read.csv("../data/shots-data.csv")
-all_five$made = c(0, 1)[(all_five$shot_made_flag=="shot_yes") + 1L]
-```
 
 ##### 2PT Effective Shooting % by Player 
 
 ```{r echo=FALSE}
-two_percent = all_five %>% 
-                  filter(shot_type == "2PT Field Goal") %>%
-                  group_by(name) %>% 
-                  summarize(total=length(made), made=sum(made)) %>%
-                  mutate(perc_made = made/total) %>%
-                  arrange(desc(perc_made))
-two_percent
+kable(two_percent)
 ``` 
 
 
 ##### 3PT Effective Shooting % by Player
 
 ```{r echo=FALSE}
-three_percent = all_five %>% 
-                  filter(shot_type == "3PT Field Goal") %>%
-                  group_by(name) %>% 
-                  summarize(total=length(made), made=sum(made)) %>%
-                  mutate(perc_made = made/total) %>%
-                  arrange(desc(perc_made))
-three_percent
+kable(three_percent)
 ``` 
 
 
 ##### Effective Shooting % by Player
 
 ```{r echo=FALSE}
-total_percent = all_five %>% 
-                  group_by(name) %>% 
-                  summarize(total=length(made), made=sum(made)) %>%
-                  mutate(perc_made = made/total) %>%
-                  arrange(desc(perc_made))
-total_percent
+kable(total_percent)
 ```
 
+
+As mentioned in the introduction, currently players like Klay Thompson and Stephen Curry score the majority of the points, and many of those points are the result of 3-point shots. However, I will now demonstrated that this is a suboptimal method of scoring points.
+
+To begin with, observe Stephen Curry. He scores roughly 54% of his 2-point shots, and roughly 40% of his 3-point shots. Since the 3-point shots are worth 50% more than the 2-point shots, the value of Stephen Curry's 3-point shots seems to be higher than the value of his 2-point shots. So, if Curry is shooting, he should be shooting 3-pointers instead of 2-pointers.  
+
+However, now observe the best overall shooter in the dataset, Kevin Durant. Durant scores roughly 60% of his 2-point shots and roughly 39% of his 3-point shots. Using the same logic as was used for Stephen Curry, the value of Kevin Durant's 3-point shots is slightly lower than that of his 2-point shots, since even 39 * 1.5 is less than 60. So, if Kevin Durant has the ball, it is better for him to be shotting 2-pointers instead of 3-pointers. 
+
+Finally, compare the best 2-point shooter and the best 3-point shooter in the dataset. Andre Iguodala, the best 2-point shooter, makes roughly 64% of his 2-point shots, whereas Klay Thompson, the best 3-point shooter, makes roughly 42% of his 3-point shots. Using the same conversion as before, we can see that even with the conversion, it's more valuable for Andre Iguodala to shoot a 2-pointer than it is for Klay Thompson to shot a 3-pointer, since 42 * 1.5 is less than 64. Moreover, since Klay Thompson is the best 3-point shooter, if Andre Iguodala's 2-point shot is more valuable than Klay Thompson's 3-point shot, then it must be more valuable than the 3-point shots for any player in the dataset. Thus, the optimal way for the team to play would be for every shot to be a 2-point shot made by Andre Iguodala. 
+
+While it doesn't provide further mathematical evidence for this conclusion, the following image, which shows the shots made by each player, similarly shows that Andre Iguodala makes a much higher percentage of his shots from within the 3-point line than any of the 5 players makes from outside the line. 
 
 ```{r out.width="80%", echo=FALSE, fig.align="center"}
 knitr::include_graphics("../images/gsw-shot-charts.png")
 ```
 
 
+##### Conclusion
 
+In short, based on the data here, it seems that the ideal way for the Golden State Warriors to play would be for the only shots made by the team as a whole to by 2-point shots made by Andre Iguodala, since that would maximize the expected number of points gained by each shot. This result has potentially far-reaching conclusions, because as of now many of the shots taken are 3-pointers, and not by Andre Iguodala. While not every team can have all their shots be taken by Andre Iguodala, they could transition to shooting only 2-pointers. This would be a revolution in the way basketball is played, paving the way for a host of new strategies and techniques. 
 
 
 
