@@ -1,0 +1,115 @@
+---
+title: "Vinaigrette"
+author: "Ryan Roggenkemper"
+date: "April 25, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+source("../R/main.R")
+``` 
+
+
+## The Binomial Distribution 
+
+I love the smell of napalm in the morning. I also love the `binomial` package. What's the binomial package, you ask? Well gather round and be amazed as I walk you through the basics of the `binomial` package. Basically, the `binomial` package lets you (almost) all things binomial: create binomial variables, show binomial distributions, show _cumulative_ binomial distributions, calculate means of binomial distributions, calculate variances of binomial distributions, calculate skewness of binomial distributions, calculate kurtosis (bless you!) of binomial distributions, calculate modes of binomial distributions, and more!  
+
+
+## Background Math
+
+Alright let's set the scene here. You're flipping a coin, which the wizard who gave it you told you is fair, and we'll believe them because they're a wizard, why would they lie? So anyway, you have this coin, and you flip it 10 times, and you wanna know how many different ways you could get 5 coins. What are you gonna do, flip that coin like 50 times and find them all? Heck no! You're gonna use `bin_choose`, included in this handy package! To see how it works, just plug in the number of flips, and the chance of heads:
+
+```{r}
+bin_choose(10, .5)
+``` 
+
+252 ways! That's way more than 50! We would've had to flip for a while!
+
+
+## Gettin' Probability with it
+
+Ok so now let's say you're thinking "That wizard's probably a dirty liar, no way this coin's fair!" But then the wizard magically whispers in your ear that it is fair and you believe him. So then you ask what the odds of getting exactly however many coins you got were. How to do? Flip more coins? No! Just use `bin_probability`! Let's say you get 4 heads in 10 tosses; just plug in the number of heads, the number of tosses, and the chance of heads: 
+
+```{r}
+bin_probability(4, 10, .5)
+``` 
+
+And wowee, it worked (just trust me, that's the right answer)!
+
+
+## The Whole Distribution
+
+Ok so _now_, we want to find the whole distribution, instead of just one probability at a time. Well guess what chicken butt? We can! Just use `bin_distribution`, and pass in a number of tosses and a chance of heads, and look at the majestic, glorious thing you get back:
+
+```{r}
+distribution = bin_distribution(10, .5)
+distribution
+``` 
+
+Absolutely incredible! It's almost too much information at once, so use this with caution. 
+
+
+## The Wholer Distribution
+
+Let's say you're not satisfied with just the entire distribution. That seems a bit greedy to me, but you can do even more; you can see the individual probabilities, and cumulative probabilities as well! No longer will you wonder "what were the odds I got at most 6 coins?"; you can just display the entire cumulative distribution, along with the probability distribution: 
+
+```{r}
+cum_dist = bin_cumulative(10, .5)
+cum_dist
+``` 
+
+Now you may be wondering "why would I ever use `bin_distribution` if I can use this?" The issue with this is that there's just sooo much information in this one. Even `bin_distribution` was a lot; this can really just be too much. 
+
+
+## I only watch it for the Plot
+
+So we've mentioned that there's just _a lot_ of numbers in both of the previous functions, which, if you're not a numbers person, can be scary. I might argue that if you're not a numbers person you shouldn't be using this package or this programming language, but either way, there's a solution for you: plotting! Both kinds of binomial distributions plot more nicely than regular R, since I love you and R doesn't. Let's see how it works:
+
+```{r}
+plot(distribution)
+``` 
+
+Neato! Now we only have like 15 numbers instead of like 30 to look at, and we have a pretty picture to go with them! 
+
+Now if you're thinking that the cumulative distribution is being left out, worry no longer, for it gets it's own style of plot too:
+
+```{r}
+plot(cum_dist)
+```
+
+Wow, look at those curves! I bet the cumulative distributions feel special now, as they should. 
+
+
+## I'm so Random! (variable)
+
+Let's get abstract for a second. Enough of figuring out exactly what these probabilities are, let's leave things to chance and introduce some random variables. The good news is that we can do that! Let's see how, by plugging in a number of trials and a chance of heads (seeing a pattern here?) into `bin_variable`:
+
+```{r}
+var = bin_variable(10, .5)
+var
+```
+
+Now you might've noticed that this doesn't print out like a regular value. That's because we went deep and changed how R works to show you the information in a nicer way. So you're welcome. "What can I do with this random variable?" you ask? Well I'll tell you what you can't do first: simulate random values, since we didn't bother to let you do that. But don't worry, who really needs random values in random variables? Let's get to what you can do: lots and lots of summary statistics. Let's see which ones (and oooohh boy are there a lot of them) with `summary`:
+
+```{r}
+summary(var)
+```
+
+I know what you're thinking: "Wow that looks so clean!" Yes, yes it does, glad you noticed. I know what else you're thinking: "Wow you didn't lie, that's sooo many statistics!" Yes, yes it is, glad you noticed. And not only can you get all those statistics at once, you can get them individually too:
+
+```{r}
+bin_mean(10, .5)
+bin_variance(10, .5)
+bin_mode(10, .5)
+bin_skewness(10, .5)
+bin_kurtosis(10, .5)
+```
+
+And would you look at that, the numbers match up! So, if you're just a number person and not a numbers person, these are the functions for you. 
+
+Alright, that's all for the functions in this package! (Not really, but the rest of them are just support functions that'll never see the light of day) Hope you had a good time, and see you next time on R Packages and Pals! 
+

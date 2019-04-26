@@ -1,0 +1,17 @@
+Package: binomial
+Type: Package
+Title: Binomial Distribution
+Version: 0.1.0
+Author: Ryan Roggenkemper
+Maintainer: Ryan Roggenkemper <rroggenkemper@berkeley.edu>
+Description: Provides functions related to the binomial distribution
+    Includes binomial probabilities, distributions, and cumulative distributions,
+    along with ways to plot them via R's built-in plot function
+License: None/free use
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
