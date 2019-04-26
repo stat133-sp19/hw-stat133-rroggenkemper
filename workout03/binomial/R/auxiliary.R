@@ -26,3 +26,4 @@ aux_kurtosis = function(trials, prob) {
     (1 - 6 * prob * (1 - prob)) / (trials * prob * (1 - prob))
   )
 }
+

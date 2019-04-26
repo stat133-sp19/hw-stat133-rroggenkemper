@@ -198,9 +198,9 @@ $(document).ready(function () {
 </div>
 <div id="background-math" class="section level2">
 <h2>Background Math</h2>
-<p>Alright let’s set the scene here. You’re flipping a coin, which the wizard who gave it you told you is fair, and we’ll believe them because they’re a wizard, why would they lie? So anyway, you have this coin, and you flip it 10 times, and you wanna know how many different ways you could get 5 coins. What are you gonna do, flip that coin like 50 times and find them all? Heck no! You’re gonna use <code>bin_choose</code>, included in this handy package! To see how it works, just plug in the number of flips, and the chance of heads:</p>
-<pre class="r"><code>bin_choose(10, .5)</code></pre>
-<pre><code>## [1] 3.613113</code></pre>
+<p>Alright let’s set the scene here. You’re flipping a coin, which the wizard who gave it to you told you is fair, and we’ll believe them because they’re a wizard, why would they lie? So anyway, you have this coin, and you flip it 10 times, and you wanna know how many different ways you could get 5 heads What are you gonna do, flip that coin like 50 times and find them all? Heck no! You’re gonna use <code>bin_choose</code>, included in this handy package! To see how it works, just plug in the number of flips, and the chance of heads:</p>
+<pre class="r"><code>bin_choose(10, 5)</code></pre>
+<pre><code>## [1] 252</code></pre>
 <p>252 ways! That’s way more than 50! We would’ve had to flip for a while!</p>
 </div>
 <div id="gettin-probability-with-it" class="section level2">
